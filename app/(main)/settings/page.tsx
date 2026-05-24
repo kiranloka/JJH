@@ -9,8 +9,7 @@ import {
   Smartphone,
   Laptop
 } from "lucide-react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
@@ -45,7 +44,7 @@ export default function SettingsPage() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-1.5">
                       <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">Hospital Name</label>
-                      <Input defaultValue="Sunshine Multi-Specialty Hospital" className="bg-zinc-50 dark:bg-zinc-950" />
+                      <Input defaultValue="JJ Hospital" className="bg-zinc-50 dark:bg-zinc-950" />
                     </div>
                     <div className="space-y-1.5">
                       <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">Location</label>
@@ -210,24 +209,7 @@ export default function SettingsPage() {
           </Card>
         </section>
 
-        {/* 6. Danger Zone */}
-        <section className="space-y-4 pt-6">
-          <Card className="rounded-2xl border-red-200 dark:border-red-900/50 bg-red-50/50 dark:bg-red-950/20 shadow-sm">
-            <CardContent className="p-6">
-              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                <div>
-                  <h3 className="font-semibold text-red-600 dark:text-red-400">Danger Zone</h3>
-                  <p className="text-sm text-red-600/80 dark:text-red-400/80 mt-1">
-                    Permanently delete all records in your workspace. This action cannot be undone.
-                  </p>
-                </div>
-                <Button variant="destructive" className="shrink-0 rounded-xl font-medium">
-                  Delete all records
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        </section>
+        
 
       </div>
     </div>
