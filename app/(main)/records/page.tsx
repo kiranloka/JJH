@@ -20,6 +20,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Checkbox } from "@/components/ui/checkbox";
 import { StatusBadge, StatusType } from "@/components/status-badge";
 import { Card } from "@/components/ui/card";
+import { DEMO_RECORD_DOWNLOAD_URL, DEMO_RECORD_VIEW_URL } from "@/lib/demo-record";
 
 const mockRecords = [
   { id: "IP-2024-0892", patientName: "Rahul Sharma", doctor: "Dr. A. Gupta", filename: "Patient_History_0892.pdf", date: "May 23, 2026", size: "2.4 MB", status: "Synced" as StatusType },
@@ -161,12 +162,22 @@ export default function RecordsPage() {
                   </TableCell>
                   <TableCell className="text-right pr-6">
                     <div className="flex justify-end items-center gap-1 opacity-50 group-hover:opacity-100 transition-opacity">
-                      <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-foreground">
+                      <a
+                        href={DEMO_RECORD_VIEW_URL}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                        aria-label={`View ${record.filename}`}
+                      >
                         <Eye className="h-4 w-4" />
-                      </Button>
-                      <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-foreground">
+                      </a>
+                      <a
+                        href={DEMO_RECORD_DOWNLOAD_URL}
+                        className="inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                        aria-label={`Download ${record.filename}`}
+                      >
                         <Download className="h-4 w-4" />
-                      </Button>
+                      </a>
                       <DropdownMenu>
                         <DropdownMenuTrigger className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-8 w-8 text-muted-foreground">
                           <MoreHorizontal className="h-4 w-4" />

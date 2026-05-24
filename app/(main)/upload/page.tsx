@@ -8,11 +8,14 @@ import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { DEMO_RECORD_DOWNLOAD_URL, DEMO_RECORD_NAME, DEMO_RECORD_VIEW_URL } from "@/lib/demo-record";
 
 export default function UploadPage() {
   const [isDragActive, setIsDragActive] = useState(false);
   const [autoSync, setAutoSync] = useState(true);
+  const [selectedFileName, setSelectedFileName] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   return (
     <div className="space-y-6 h-full flex flex-col">
@@ -45,14 +48,58 @@ export default function UploadPage() {
                   ? "border-blue-500 bg-blue-50 dark:bg-blue-950/20" 
                   : "border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
                 }`}
+              onClick={() => fileInputRef.current?.click()}
               onMouseEnter={() => setIsDragActive(true)}
               onMouseLeave={() => setIsDragActive(false)}
             >
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="application/pdf,.pdf"
+                className="hidden"
+                onChange={(event) => {
+                  const file = event.target.files?.[0]
+                  setSelectedFileName(file?.name ?? null)
+                }}
+              />
               <div className="bg-blue-100 dark:bg-blue-900/30 p-4 rounded-full mb-6">
                 <CloudUpload className="h-12 w-12 text-blue-600 dark:text-blue-400" />
               </div>
               <h3 className="text-xl font-semibold mb-2">Drag & drop scanned PDFs here</h3>
               <p className="text-zinc-500 dark:text-zinc-400 mb-6">or click to browse files</p>
+
+              <div className="flex flex-wrap items-center justify-center gap-3">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={(event) => {
+                    event.stopPropagation()
+                    fileInputRef.current?.click()
+                  }}
+                >
+                  Browse PDFs
+                </Button>
+                <a
+                  href={DEMO_RECORD_DOWNLOAD_URL}
+                  className="inline-flex h-8 items-center justify-center rounded-lg border border-zinc-200 px-3 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-100 dark:border-zinc-800 dark:text-zinc-200 dark:hover:bg-zinc-800"
+                  onClick={(event) => event.stopPropagation()}
+                >
+                  Download demo PDF
+                </a>
+                <a
+                  href={DEMO_RECORD_VIEW_URL}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex h-8 items-center justify-center rounded-lg border border-zinc-200 px-3 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-100 dark:border-zinc-800 dark:text-zinc-200 dark:hover:bg-zinc-800"
+                  onClick={(event) => event.stopPropagation()}
+                >
+                  Preview demo PDF
+                </a>
+              </div>
+
+              <div className="mt-4 min-h-5 text-sm text-zinc-500 dark:text-zinc-400">
+                {selectedFileName ? `Selected for upload demo: ${selectedFileName}` : `Demo file available: ${DEMO_RECORD_NAME}`}
+              </div>
               
               <div className="flex items-center gap-2 text-xs text-zinc-400 mt-auto pt-8">
                 <AlertCircle className="h-4 w-4" />
