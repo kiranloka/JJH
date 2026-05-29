@@ -1,6 +1,7 @@
 import { Badge } from "@/components/ui/badge";
+import { RecordStatus } from "@/lib/medical-records";
 
-export type StatusType = "Synced" | "Uploading" | "Failed";
+export type StatusType = RecordStatus;
 
 export function StatusBadge({ status }: { status: StatusType }) {
   const variants = {

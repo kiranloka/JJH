@@ -36,3 +36,11 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 # JJH
 # JJH
+
+## Supabase demo storage
+
+Run `supabase/schema.sql` in the Supabase SQL editor, create `.env.local` from `.env.example`, and restart `npm run dev`.
+
+The app stores file metadata in `public.medical_records` and PDFs in the private Supabase Storage bucket `medical-records`. Upload and download limits are enforced server-side through `public.daily_usage` RPC functions: 150 uploads/day and 20 downloads/day.
+
+Storage access is isolated behind `lib/server/storage.ts`. The current adapter is Supabase Storage for demo; production S3 should be added by implementing the same `ObjectStorageProvider` interface and switching `STORAGE_PROVIDER=s3`.
