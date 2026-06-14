@@ -77,10 +77,10 @@ export default function SectionsPage() {
   }, []);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5 md:space-y-6">
       <div>
-        <h1 className="text-3xl font-semibold tracking-tight">Hospital Sections</h1>
-        <p className="text-muted-foreground mt-1">
+        <h1 className="text-2xl md:text-3xl font-semibold tracking-tight">Hospital Sections</h1>
+        <p className="text-muted-foreground mt-1 text-sm">
           Browse patient medical records categorized by department and specialized care units.
         </p>
       </div>

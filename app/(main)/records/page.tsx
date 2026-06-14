@@ -12,6 +12,10 @@ import {
   X,
   Save,
   RefreshCw,
+  FileText,
+  User,
+  Stethoscope,
+  Calendar,
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -248,10 +252,10 @@ function RecordsPageContent() {
 
   return (
     <div className="space-y-6 h-full flex flex-col">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 md:gap-4">
         <div>
-          <h1 className="text-3xl font-semibold tracking-tight">Records</h1>
-          <p className="text-muted-foreground mt-1">
+          <h1 className="text-2xl md:text-3xl font-semibold tracking-tight">Records</h1>
+          <p className="text-muted-foreground mt-1 text-sm">
             Browse, search, and manage all uploaded documents securely.
           </p>
         </div>
@@ -279,8 +283,8 @@ function RecordsPageContent() {
       </div>
 
       <Card className="rounded-2xl border-border bg-card shadow-sm flex-1 flex flex-col overflow-hidden">
-        <div className="p-4 border-b border-border bg-muted/20 flex flex-col xl:flex-row gap-4 justify-between items-center">
-          <div className="relative w-full xl:max-w-md">
+        <div className="p-3 md:p-4 border-b border-border bg-muted/20 flex flex-col gap-3 md:gap-4">
+          <div className="relative w-full">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
               placeholder="Search file, IP, patient, doctor, or section..."
@@ -290,14 +294,14 @@ function RecordsPageContent() {
             />
           </div>
 
-          <div className="flex flex-wrap gap-3 w-full xl:w-auto">
+          <div className="flex flex-wrap gap-2 md:gap-3 w-full">
             <MultiSelectDropdown
               options={doctorsList}
               selectedValues={selectedDoctors}
               onChange={setSelectedDoctors}
               placeholder="All Doctors"
               labelPrefix="Doctors"
-              className="flex-1 min-w-[140px] xl:w-40"
+              className="flex-1 min-w-[130px]"
             />
 
             <MultiSelectDropdown
@@ -306,7 +310,7 @@ function RecordsPageContent() {
               onChange={setSelectedPatients}
               placeholder="All Patients"
               labelPrefix="Patients"
-              className="flex-1 min-w-[140px] xl:w-40"
+              className="flex-1 min-w-[130px]"
             />
 
             <MultiSelectDropdown
@@ -315,10 +319,10 @@ function RecordsPageContent() {
               onChange={setSelectedSections}
               placeholder="All Sections"
               labelPrefix="Sections"
-              className="flex-1 min-w-[140px] xl:w-40"
+              className="flex-1 min-w-[130px]"
             />
 
-            <div className="relative flex-1 min-w-[130px] xl:w-32">
+            <div className="relative flex-1 min-w-[120px]">
               <select
                 value={selectedYear}
                 onChange={(event) => {
@@ -340,7 +344,7 @@ function RecordsPageContent() {
               </div>
             </div>
 
-            <div className="relative flex-1 min-w-[130px] xl:w-32">
+            <div className="relative flex-1 min-w-[120px]">
               <select
                 value={selectedMonth}
                 onChange={(event) => setSelectedMonth(event.target.value)}
@@ -358,7 +362,7 @@ function RecordsPageContent() {
               </div>
             </div>
 
-            <div className="relative flex-1 min-w-[140px] xl:w-40">
+            <div className="relative flex-1 min-w-[130px]">
               <select
                 value={statusFilter}
                 onChange={(event) => setStatusFilter(event.target.value as RecordStatus | "All Status")}
@@ -377,126 +381,214 @@ function RecordsPageContent() {
         </div>
 
         <div className="flex-1 overflow-auto">
-          <Table>
-            <TableHeader className="bg-muted/50 sticky top-0 z-10 backdrop-blur-sm">
-              <TableRow className="border-border">
-                <TableHead className="w-12 text-center pl-4">
-                  <Checkbox className="rounded bg-background border-input" />
-                </TableHead>
-                <TableHead className="font-medium text-foreground">IP Number</TableHead>
-                <TableHead className="font-medium text-foreground">File Name</TableHead>
-                <TableHead className="font-medium text-foreground">Patient</TableHead>
-                <TableHead className="font-medium text-foreground">Doctor</TableHead>
-                <TableHead className="font-medium text-foreground">Sections</TableHead>
-                <TableHead className="font-medium text-foreground">Medical Record Date</TableHead>
-                <TableHead className="font-medium text-foreground">Uploaded At</TableHead>
-                <TableHead className="font-medium text-foreground">Size</TableHead>
-                <TableHead className="font-medium text-foreground">Status</TableHead>
-                <TableHead className="text-right font-medium text-foreground pr-6">Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {isLoading ? (
-                <TableRow>
-                  <TableCell colSpan={11} className="text-center py-8 text-muted-foreground">
-                    Loading records from Supabase...
-                  </TableCell>
+          <div className="hidden md:block">
+            <Table>
+              <TableHeader className="bg-muted/50 sticky top-0 z-10 backdrop-blur-sm">
+                <TableRow className="border-border">
+                  <TableHead className="w-12 text-center pl-4">
+                    <Checkbox className="rounded bg-background border-input" />
+                  </TableHead>
+                  <TableHead className="font-medium text-foreground">IP Number</TableHead>
+                  <TableHead className="font-medium text-foreground">File Name</TableHead>
+                  <TableHead className="font-medium text-foreground">Patient</TableHead>
+                  <TableHead className="font-medium text-foreground">Doctor</TableHead>
+                  <TableHead className="font-medium text-foreground">Sections</TableHead>
+                  <TableHead className="font-medium text-foreground">Medical Record Date</TableHead>
+                  <TableHead className="font-medium text-foreground">Uploaded At</TableHead>
+                  <TableHead className="font-medium text-foreground">Size</TableHead>
+                  <TableHead className="font-medium text-foreground">Status</TableHead>
+                  <TableHead className="text-right font-medium text-foreground pr-6">Actions</TableHead>
                 </TableRow>
-              ) : loadError ? (
-                <TableRow>
-                  <TableCell colSpan={11} className="text-center py-8 text-destructive">
-                    {loadError}
-                  </TableCell>
-                </TableRow>
-              ) : filteredRecords.length === 0 ? (
-                <TableRow>
-                  <TableCell colSpan={11} className="text-center py-8 text-muted-foreground">
-                    No medical records found matching the active filters.
-                  </TableCell>
-                </TableRow>
-              ) : (
-                filteredRecords.map((record) => (
-                  <TableRow key={record.id} className="border-border hover:bg-muted/30 transition-colors group">
-                    <TableCell className="text-center pl-4">
-                      <Checkbox className="rounded bg-background border-input data-[state=checked]:bg-primary data-[state=checked]:border-primary" />
-                    </TableCell>
-                    <TableCell className="font-medium">
-                      {displayRecordValue(record.ipNumber)}
-                    </TableCell>
-                    <TableCell className="text-muted-foreground max-w-[240px] truncate">
-                      {record.fileName}
-                    </TableCell>
-                    <TableCell className="text-muted-foreground">
-                      {displayRecordValue(record.patientName)}
-                    </TableCell>
-                    <TableCell className="text-muted-foreground">
-                      {displayRecordValue(record.doctorName)}
-                    </TableCell>
-                    <TableCell className="font-medium">
-                      {record.sections.length > 0 ? (
-                        <div className="flex flex-wrap gap-1">
-                          {record.sections.map((section) => (
-                            <span
-                              key={section}
-                              className="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-semibold bg-primary/10 text-primary"
-                            >
-                              {section}
-                            </span>
-                          ))}
-                        </div>
-                      ) : (
-                        <span className="text-muted-foreground">Unassigned</span>
-                      )}
-                    </TableCell>
-                    <TableCell className="text-muted-foreground">
-                      {formatRecordDate(record.recordDate)}
-                    </TableCell>
-                    <TableCell className="text-muted-foreground">
-                      {formatRecordDate(record.uploadedAt)}
-                    </TableCell>
-                    <TableCell className="text-muted-foreground font-mono text-xs">
-                      {formatBytes(record.sizeBytes)}
-                    </TableCell>
-                    <TableCell>
-                      <StatusBadge status={record.status} />
-                    </TableCell>
-                    <TableCell className="text-right pr-6">
-                      <div className="flex justify-end items-center gap-1 opacity-60 group-hover:opacity-100 transition-opacity">
-                        <a
-                          href={`/api/records/${record.id}/view`}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-                          aria-label={`View ${record.fileName}`}
-                        >
-                          <Eye className="h-4 w-4" />
-                        </a>
-                        <a
-                          href={`/api/records/${record.id}/download`}
-                          className="inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-                          aria-label={`Download ${record.fileName}`}
-                        >
-                          <Download className="h-4 w-4" />
-                        </a>
-                        <button
-                          type="button"
-                          onClick={() => openEditModal(record)}
-                          className="inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-                          aria-label={`Edit metadata for ${record.fileName}`}
-                        >
-                          <Edit2 className="h-4 w-4" />
-                        </button>
-                      </div>
+              </TableHeader>
+              <TableBody>
+                {isLoading ? (
+                  <TableRow>
+                    <TableCell colSpan={11} className="text-center py-8 text-muted-foreground">
+                      Loading records from Supabase...
                     </TableCell>
                   </TableRow>
-                ))
-              )}
-            </TableBody>
-          </Table>
+                ) : loadError ? (
+                  <TableRow>
+                    <TableCell colSpan={11} className="text-center py-8 text-destructive">
+                      {loadError}
+                    </TableCell>
+                  </TableRow>
+                ) : filteredRecords.length === 0 ? (
+                  <TableRow>
+                    <TableCell colSpan={11} className="text-center py-8 text-muted-foreground">
+                      No medical records found matching the active filters.
+                    </TableCell>
+                  </TableRow>
+                ) : (
+                  filteredRecords.map((record) => (
+                    <TableRow key={record.id} className="border-border hover:bg-muted/30 transition-colors group">
+                      <TableCell className="text-center pl-4">
+                        <Checkbox className="rounded bg-background border-input data-[state=checked]:bg-primary data-[state=checked]:border-primary" />
+                      </TableCell>
+                      <TableCell className="font-medium">
+                        {displayRecordValue(record.ipNumber)}
+                      </TableCell>
+                      <TableCell className="text-muted-foreground max-w-[240px] truncate">
+                        {record.fileName}
+                      </TableCell>
+                      <TableCell className="text-muted-foreground">
+                        {displayRecordValue(record.patientName)}
+                      </TableCell>
+                      <TableCell className="text-muted-foreground">
+                        {displayRecordValue(record.doctorName)}
+                      </TableCell>
+                      <TableCell className="font-medium">
+                        {record.sections.length > 0 ? (
+                          <div className="flex flex-wrap gap-1">
+                            {record.sections.map((section) => (
+                              <span
+                                key={section}
+                                className="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-semibold bg-primary/10 text-primary"
+                              >
+                                {section}
+                              </span>
+                            ))}
+                          </div>
+                        ) : (
+                          <span className="text-muted-foreground">Unassigned</span>
+                        )}
+                      </TableCell>
+                      <TableCell className="text-muted-foreground">
+                        {formatRecordDate(record.recordDate)}
+                      </TableCell>
+                      <TableCell className="text-muted-foreground">
+                        {formatRecordDate(record.uploadedAt)}
+                      </TableCell>
+                      <TableCell className="text-muted-foreground font-mono text-xs">
+                        {formatBytes(record.sizeBytes)}
+                      </TableCell>
+                      <TableCell>
+                        <StatusBadge status={record.status} />
+                      </TableCell>
+                      <TableCell className="text-right pr-6">
+                        <div className="flex justify-end items-center gap-1 opacity-60 group-hover:opacity-100 transition-opacity">
+                          <a
+                            href={`/api/records/${record.id}/view`}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                            aria-label={`View ${record.fileName}`}
+                          >
+                            <Eye className="h-4 w-4" />
+                          </a>
+                          <a
+                            href={`/api/records/${record.id}/download`}
+                            className="inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                            aria-label={`Download ${record.fileName}`}
+                          >
+                            <Download className="h-4 w-4" />
+                          </a>
+                          <button
+                            type="button"
+                            onClick={() => openEditModal(record)}
+                            className="inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                            aria-label={`Edit metadata for ${record.fileName}`}
+                          >
+                            <Edit2 className="h-4 w-4" />
+                          </button>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))
+                )}
+              </TableBody>
+            </Table>
+          </div>
+
+          <div className="md:hidden">
+            {isLoading ? (
+              <div className="text-center py-8 text-muted-foreground">
+                Loading records from Supabase...
+              </div>
+            ) : loadError ? (
+              <div className="text-center py-8 text-destructive">
+                {loadError}
+              </div>
+            ) : filteredRecords.length === 0 ? (
+              <div className="text-center py-8 text-muted-foreground">
+                No medical records found matching the active filters.
+              </div>
+            ) : (
+              <div className="divide-y divide-border">
+                {filteredRecords.map((record) => (
+                  <div key={record.id} className="p-4 space-y-3">
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="min-w-0 flex-1">
+                        <p className="font-medium text-sm truncate">{record.fileName}</p>
+                        <p className="text-xs text-muted-foreground mt-0.5">{displayRecordValue(record.ipNumber)}</p>
+                      </div>
+                      <StatusBadge status={record.status} />
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-2 text-xs">
+                      <div className="flex items-center gap-1.5 text-muted-foreground">
+                        <User className="h-3 w-3 shrink-0" />
+                        <span className="truncate">{displayRecordValue(record.patientName)}</span>
+                      </div>
+                      <div className="flex items-center gap-1.5 text-muted-foreground">
+                        <Stethoscope className="h-3 w-3 shrink-0" />
+                        <span className="truncate">{displayRecordValue(record.doctorName)}</span>
+                      </div>
+                      <div className="flex items-center gap-1.5 text-muted-foreground">
+                        <Calendar className="h-3 w-3 shrink-0" />
+                        <span>{formatRecordDate(record.recordDate)}</span>
+                      </div>
+                      <div className="flex items-center gap-1.5 text-muted-foreground">
+                        <FileText className="h-3 w-3 shrink-0" />
+                        <span className="font-mono">{formatBytes(record.sizeBytes)}</span>
+                      </div>
+                    </div>
+
+                    {record.sections.length > 0 && (
+                      <div className="flex flex-wrap gap-1">
+                        {record.sections.map((section) => (
+                          <span
+                            key={section}
+                            className="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-semibold bg-primary/10 text-primary"
+                          >
+                            {section}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+
+                    <div className="flex items-center gap-1 pt-1 border-t border-border/50">
+                      <a
+                        href={`/api/records/${record.id}/view`}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+                      >
+                        <Eye className="h-3.5 w-3.5" /> View
+                      </a>
+                      <a
+                        href={`/api/records/${record.id}/download`}
+                        className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+                      >
+                        <Download className="h-3.5 w-3.5" /> Download
+                      </a>
+                      <button
+                        type="button"
+                        onClick={() => openEditModal(record)}
+                        className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+                      >
+                        <Edit2 className="h-3.5 w-3.5" /> Edit
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
 
-        <div className="border-t border-border p-4 flex items-center justify-between bg-card text-sm">
-          <p className="text-muted-foreground">
+        <div className="border-t border-border p-3 md:p-4 flex items-center justify-between bg-card text-sm">
+          <p className="text-muted-foreground text-xs md:text-sm">
             Showing{" "}
             <span className="font-medium text-foreground">
               {filteredRecords.length > 0 ? "1" : "0"}-{filteredRecords.length}
@@ -515,25 +607,25 @@ function RecordsPageContent() {
       </Card>
 
       {editingRecord && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm p-4">
-          <div className="w-full max-w-lg rounded-2xl border border-border bg-card shadow-xl">
-            <div className="flex items-start justify-between border-b border-border p-5">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm p-3 md:p-4">
+          <div className="w-full max-w-lg rounded-2xl border border-border bg-card shadow-xl max-h-[90vh] overflow-y-auto">
+            <div className="flex items-start justify-between border-b border-border p-4 md:p-5">
               <div>
-                <h2 className="text-lg font-semibold">Edit record metadata</h2>
-                <p className="text-sm text-muted-foreground mt-1">
+                <h2 className="text-base md:text-lg font-semibold">Edit record metadata</h2>
+                <p className="text-xs md:text-sm text-muted-foreground mt-1">
                   Only IP number, patient, doctor, and sections are editable here.
                 </p>
               </div>
               <button
                 type="button"
                 onClick={() => setEditingRecord(null)}
-                className="rounded-md p-1 text-muted-foreground hover:bg-muted hover:text-foreground"
+                className="rounded-md p-1 text-muted-foreground hover:bg-muted hover:text-foreground shrink-0"
                 aria-label="Close edit modal"
               >
                 <X className="h-4 w-4" />
               </button>
             </div>
-            <div className="space-y-4 p-5">
+            <div className="space-y-4 p-4 md:p-5">
               <div className="space-y-1.5">
                 <label className="text-sm font-medium">Medical Record Date</label>
                 <Input
@@ -578,11 +670,11 @@ function RecordsPageContent() {
 
               {editError && <p className="text-sm text-destructive">{editError}</p>}
             </div>
-            <div className="flex justify-end gap-2 border-t border-border p-5">
-              <Button variant="outline" onClick={() => setEditingRecord(null)} disabled={isSaving}>
+            <div className="flex justify-end gap-2 border-t border-border p-4 md:p-5">
+              <Button variant="outline" onClick={() => setEditingRecord(null)} disabled={isSaving} className="h-9">
                 Cancel
               </Button>
-              <Button onClick={saveMetadata} disabled={isSaving}>
+              <Button onClick={saveMetadata} disabled={isSaving} className="h-9">
                 <Save className="h-4 w-4" />
                 {isSaving ? "Saving..." : "Save changes"}
               </Button>

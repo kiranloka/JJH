@@ -94,13 +94,13 @@ export default function DashboardPage() {
   const logs = dashboard?.recentActivity ?? [];
 
   return (
-    <div className="space-y-8 p-6 max-w-7xl mx-auto">
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b border-border/60 pb-6">
+    <div className="space-y-6 md:space-y-8 p-4 md:p-6 max-w-7xl mx-auto">
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 md:gap-4 border-b border-border/60 pb-5 md:pb-6">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
+          <h1 className="text-2xl md:text-3xl font-bold tracking-tight bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
             Medical Records Operations
           </h1>
-          <p className="text-muted-foreground mt-1 flex items-center gap-2 text-sm">
+          <p className="text-muted-foreground mt-1 flex items-center gap-2 text-xs md:text-sm">
             <Clock className="h-4 w-4 text-muted-foreground/70" /> {today}
           </p>
         </div>
@@ -221,52 +221,54 @@ export default function DashboardPage() {
           </div>
         </CardHeader>
         <CardContent className="p-0">
-          <Table>
-            <TableHeader className="bg-muted/30 border-b border-border/60">
-              <TableRow className="hover:bg-transparent">
-                <TableHead className="w-40 pl-6 font-medium text-xs uppercase tracking-wider text-muted-foreground">Timestamp</TableHead>
-                <TableHead className="font-medium text-xs uppercase tracking-wider text-muted-foreground">Event Activity</TableHead>
-                <TableHead className="font-medium text-xs uppercase tracking-wider text-muted-foreground">Subsystem Source</TableHead>
-                <TableHead className="text-right pr-6 font-medium text-xs uppercase tracking-wider text-muted-foreground">Status</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {logs.length === 0 ? (
-                <TableRow>
-                  <TableCell colSpan={4} className="text-center py-8 text-muted-foreground">
-                    No upload activity yet.
-                  </TableCell>
+          <div className="overflow-x-auto">
+            <Table className="min-w-[600px]">
+              <TableHeader className="bg-muted/30 border-b border-border/60">
+                <TableRow className="hover:bg-transparent">
+                  <TableHead className="w-40 pl-6 font-medium text-xs uppercase tracking-wider text-muted-foreground">Timestamp</TableHead>
+                  <TableHead className="font-medium text-xs uppercase tracking-wider text-muted-foreground">Event Activity</TableHead>
+                  <TableHead className="font-medium text-xs uppercase tracking-wider text-muted-foreground">Subsystem Source</TableHead>
+                  <TableHead className="text-right pr-6 font-medium text-xs uppercase tracking-wider text-muted-foreground">Status</TableHead>
                 </TableRow>
-              ) : (
-                logs.map((log, index) => (
-                  <TableRow key={`${log.time}-${index}`} className="border-border/60 hover:bg-muted/20 transition-colors">
-                    <TableCell className="text-muted-foreground pl-6 font-mono text-xs">{log.time}</TableCell>
-                    <TableCell className="font-medium text-foreground text-sm">{log.event}</TableCell>
-                    <TableCell className="text-muted-foreground text-sm flex items-center gap-2">
-                      <Database className="h-3.5 w-3.5 opacity-60" /> {log.source}
-                    </TableCell>
-                    <TableCell className="text-right pr-6">
-                      {log.status === "success" && (
-                        <Badge variant="outline" className="bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20 gap-1.5 px-2.5 py-0.5 rounded-full font-medium">
-                          <CheckCircle2 className="h-3 w-3" /> Success
-                        </Badge>
-                      )}
-                      {log.status === "error" && (
-                        <Badge variant="outline" className="bg-destructive/10 text-destructive border-destructive/20 gap-1.5 px-2.5 py-0.5 rounded-full font-medium">
-                          <AlertCircle className="h-3 w-3" /> System Fault
-                        </Badge>
-                      )}
-                      {log.status === "info" && (
-                        <Badge variant="secondary" className="bg-muted text-muted-foreground hover:bg-muted px-2.5 py-0.5 rounded-full font-medium">
-                          Information
-                        </Badge>
-                      )}
+              </TableHeader>
+              <TableBody>
+                {logs.length === 0 ? (
+                  <TableRow>
+                    <TableCell colSpan={4} className="text-center py-8 text-muted-foreground">
+                      No upload activity yet.
                     </TableCell>
                   </TableRow>
-                ))
-              )}
-            </TableBody>
-          </Table>
+                ) : (
+                  logs.map((log, index) => (
+                    <TableRow key={`${log.time}-${index}`} className="border-border/60 hover:bg-muted/20 transition-colors">
+                      <TableCell className="text-muted-foreground pl-6 font-mono text-xs whitespace-nowrap">{log.time}</TableCell>
+                      <TableCell className="font-medium text-foreground text-sm">{log.event}</TableCell>
+                      <TableCell className="text-muted-foreground text-sm flex items-center gap-2">
+                        <Database className="h-3.5 w-3.5 opacity-60" /> {log.source}
+                      </TableCell>
+                      <TableCell className="text-right pr-6">
+                        {log.status === "success" && (
+                          <Badge variant="outline" className="bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20 gap-1.5 px-2.5 py-0.5 rounded-full font-medium">
+                            <CheckCircle2 className="h-3 w-3" /> Success
+                          </Badge>
+                        )}
+                        {log.status === "error" && (
+                          <Badge variant="outline" className="bg-destructive/10 text-destructive border-destructive/20 gap-1.5 px-2.5 py-0.5 rounded-full font-medium">
+                            <AlertCircle className="h-3 w-3" /> System Fault
+                          </Badge>
+                        )}
+                        {log.status === "info" && (
+                          <Badge variant="secondary" className="bg-muted text-muted-foreground hover:bg-muted px-2.5 py-0.5 rounded-full font-medium">
+                            Information
+                          </Badge>
+                        )}
+                      </TableCell>
+                    </TableRow>
+                  ))
+                )}
+              </TableBody>
+            </Table>
+          </div>
         </CardContent>
       </Card>
     </div>

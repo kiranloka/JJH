@@ -232,11 +232,11 @@ export default function UploadPage() {
   }
 
   return (
-    <div className="space-y-6 pb-8">
-      <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+    <div className="space-y-4 md:space-y-6 pb-8">
+      <div className="flex flex-col gap-3 md:gap-4 lg:flex-row lg:items-end lg:justify-between">
         <div>
-          <h1 className="text-3xl font-semibold tracking-tight">Upload Records</h1>
-          <p className="text-zinc-500 dark:text-zinc-400 mt-1">
+          <h1 className="text-2xl md:text-3xl font-semibold tracking-tight">Upload Records</h1>
+          <p className="text-zinc-500 dark:text-zinc-400 mt-1 text-sm">
             Manually upload PDFs or sync files from a selected folder for one day.
           </p>
         </div>
@@ -277,7 +277,7 @@ export default function UploadPage() {
             The medical record date is stored separately from the system upload timestamp.
           </CardDescription>
         </CardHeader>
-        <CardContent className="grid grid-cols-1 md:grid-cols-5 gap-4">
+        <CardContent className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3 md:gap-4">
           <Field label="Medical Record Date">
             <Input
               type="date"
@@ -329,7 +329,7 @@ export default function UploadPage() {
           </CardHeader>
           <CardContent className="flex-1 flex flex-col gap-6 pb-6">
             <div
-              className={`flex-1 min-h-[360px] border-2 border-dashed rounded-2xl flex flex-col items-center justify-center p-12 text-center transition-colors cursor-pointer
+              className={`flex-1 min-h-[280px] md:min-h-[360px] border-2 border-dashed rounded-2xl flex flex-col items-center justify-center p-6 md:p-12 text-center transition-colors cursor-pointer
                 ${
                   isDragActive
                     ? "border-blue-500 bg-blue-50 dark:bg-blue-950/20"
@@ -350,11 +350,11 @@ export default function UploadPage() {
                 className="hidden"
                 onChange={(event) => setManualFile(event.target.files?.[0] ?? null)}
               />
-              <div className="bg-blue-100 dark:bg-blue-900/30 p-4 rounded-full mb-6">
-                <CloudUpload className="h-12 w-12 text-blue-600 dark:text-blue-400" />
+              <div className="bg-blue-100 dark:bg-blue-900/30 p-3 md:p-4 rounded-full mb-4 md:mb-6">
+                <CloudUpload className="h-10 w-10 md:h-12 md:w-12 text-blue-600 dark:text-blue-400" />
               </div>
-              <h3 className="text-xl font-semibold mb-2">Drag and drop scanned PDFs here</h3>
-              <p className="text-zinc-500 dark:text-zinc-400 mb-6">or click to browse files</p>
+              <h3 className="text-lg md:text-xl font-semibold mb-1 md:mb-2">Drag and drop scanned PDFs here</h3>
+              <p className="text-zinc-500 dark:text-zinc-400 mb-4 md:mb-6 text-sm">or click to browse files</p>
 
               <div className="flex flex-wrap items-center justify-center gap-3">
                 <Button
