@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { Globe, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,10 +10,35 @@ import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
   const router = useRouter();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleSignIn = (e: React.FormEvent) => {
+  const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
-    router.push("/dashboard");
+    setError("");
+    setLoading(true);
+
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        setError(data.error || "Invalid credentials");
+        return;
+      }
+
+      router.push("/dashboard");
+    } catch {
+      setError("An error occurred. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -36,6 +62,8 @@ export default function LoginPage() {
                   type="email"
                   placeholder="hospital.email@example.com"
                   className="rounded-xl h-11 bg-background"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   required
                 />
               </div>
@@ -44,6 +72,8 @@ export default function LoginPage() {
                   type="password"
                   placeholder="••••••••"
                   className="rounded-xl h-11 bg-background"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   required
                 />
                 <div className="flex justify-end">
@@ -52,8 +82,11 @@ export default function LoginPage() {
                   </a>
                 </div>
               </div>
-              <Button type="submit" className="w-full h-11 rounded-xl font-medium">
-                Sign in
+              {error && (
+                <p className="text-sm text-red-500 text-center">{error}</p>
+              )}
+              <Button type="submit" className="w-full h-11 rounded-xl font-medium" disabled={loading}>
+                {loading ? "Signing in..." : "Sign in"}
               </Button>
             </form>
 
